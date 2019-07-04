@@ -5,8 +5,10 @@
  */
 
 module.exports = {
-  title: "My Blog",
-  description: "This is Bruno's blog",
+  siteMetadata: {
+    title: "My Blog",
+    description: "This is Bruno's blog",
+  },
   plugins: [
     `gatsby-transformer-remark`,
     {
