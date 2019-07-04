@@ -1,30 +1,31 @@
 import React from "react"
 import Header from "../components/Header"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 
 const Layout = ({ data }) => {
   const { edges } = data.allMarkdownRemark
-  console.log(edges)
 
   return (
     <div>
       <Header />
-      {edges.map(edge => {
-        const { frontmatter } = edge.node
-        return (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              fontFamily: "avenir",
-            }}
-            key={frontmatter.path}
-          >
-            {frontmatter.title}
-          </div>
-        )
-      })}
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          fontFamily: "avenir",
+        }}
+      >
+        {edges.map(edge => {
+          const { frontmatter } = edge.node
+          return (
+            <div style={{ marginBottom: "1rem" }} key={frontmatter.path}>
+              <Link to={frontmatter.path}>{frontmatter.title}</Link>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
