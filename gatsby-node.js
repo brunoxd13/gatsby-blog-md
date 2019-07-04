@@ -21,14 +21,19 @@ exports.createPages = ({ graphql, actions }) => {
           }
         `
       ).then(result => {
-        result.data.allMarkdownRemark.edges.map(edge => {
-          const path = edge.node.frontmatter.path
+        const posts = result.data.allMarkdownRemark.edges
+
+        posts.map(({ node }, index) => {
+          const path = node.frontmatter.path
 
           createPage({
             path,
             component: blogPostTemplate,
             context: {
               pathSlug: path,
+              prev: index === 0 ? null : posts[index - 1].node,
+              next:
+                posts.length - 1 === undefined ? null : posts[index + 1].node,
             },
           })
 
