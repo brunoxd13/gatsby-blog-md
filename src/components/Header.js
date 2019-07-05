@@ -24,13 +24,15 @@ const TitleAndDescription = ({ data }) => {
 
   return (
     <MainContainer>
-      <BlogTitle>{title}</BlogTitle>
-      <BlogDescription>{description}</BlogDescription>
+      <BlogTitle data-testid="blog-title">{title}</BlogTitle>
+      <BlogDescription data-testid="blog-description">
+        {description}
+      </BlogDescription>
     </MainContainer>
   )
 }
 
-const Header = () => {
+const Header = props => {
   return (
     <StaticQuery
       query={graphql`
@@ -43,7 +45,7 @@ const Header = () => {
           }
         }
       `}
-      render={data => <TitleAndDescription data={data} />}
+      render={data => <TitleAndDescription {...props} data={data} />}
     />
   )
 }
