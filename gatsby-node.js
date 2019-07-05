@@ -1,5 +1,47 @@
 const path = require("path")
 
+const createTagPages = (createPage, posts) => {
+  const allTagsIndexTemplate = path.resolve("src/templates/AllTagsIndex.js")
+  const singleTagIndexTemplate = path.resolve("src/templates/SingleTagIndex.js")
+
+  const postsByTag = {}
+
+  posts.forEach(({ node }) => {
+    if (node.frontmatter.tags) {
+      node.frontmatter.tags.forEach(tag => {
+        if (!postsByTag[tag]) {
+          postsByTag[tag] = []
+        }
+
+        postsByTag[tag].push(node)
+      })
+    }
+  })
+
+  const tags = Object.keys(postsByTag)
+
+  createPage({
+    path: "/tags",
+    component: allTagsIndexTemplate,
+    context: {
+      tags: tags.sort(),
+    },
+  })
+
+  tags.forEach(tagName => {
+    const posts = postsByTag[tagName]
+
+    createPage({
+      path: `/tags/${tagName}`,
+      component: singleTagIndexTemplate,
+      context: {
+        posts,
+        tagName,
+      },
+    })
+  })
+}
+
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
@@ -14,6 +56,8 @@ exports.createPages = ({ graphql, actions }) => {
                 node {
                   frontmatter {
                     path
+                    title
+                    tags
                   }
                 }
               }
@@ -23,7 +67,9 @@ exports.createPages = ({ graphql, actions }) => {
       ).then(result => {
         const posts = result.data.allMarkdownRemark.edges
 
-        posts.map(({ node }, index) => {
+        createTagPages(createPage, posts)
+
+        posts.forEach(({ node }, index) => {
           const path = node.frontmatter.path
 
           createPage({
@@ -32,8 +78,7 @@ exports.createPages = ({ graphql, actions }) => {
             context: {
               pathSlug: path,
               prev: index === 0 ? null : posts[index - 1].node,
-              next:
-                posts.length - 1 === undefined ? null : posts[index + 1].node,
+              next: posts.length - 1 >= 0 ? posts[index + 1].node : null,
             },
           })
 
