@@ -78,7 +78,7 @@ exports.createPages = ({ graphql, actions }) => {
             context: {
               pathSlug: path,
               prev: index === 0 ? null : posts[index - 1].node,
-              next: posts.length - 1 >= 0 ? posts[index + 1].node : null,
+              next: posts[index + 1] ? posts[index + 1].node : null,
             },
           })
 
