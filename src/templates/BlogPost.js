@@ -1,29 +1,29 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
+import styled from "styled-components"
 
+const Title = styled.h1`
+  font-family: avenir;
+`
+
+const PostContainer = styled.div`
+  font-family: avenir;
+`
 const Template = ({ data, pageContext }) => {
-  console.log(pageContext)
   const { next, prev } = pageContext
   const title = data.markdownRemark.frontmatter.title
   const html = data.markdownRemark.html
 
   return (
-    <div>
-      <h1 style={{ fontFamily: "avenir" }}>{title}</h1>
-      <div
-        className="blogpost"
-        dangerouslySetInnerHTML={{ __html: html }}
-        style={{ fontFamily: "avenir" }}
-      />
+    <>
+      <Title>{title}</Title>
+      <PostContainer>
+        <div className="blogpost" dangerouslySetInnerHTML={{ __html: html }} />
 
-      <div style={{ margin: "1rem", fontFamily: "avenir" }}>
         {next && <Link to={next.frontmatter.path}>Next</Link>}
-      </div>
-
-      <div style={{ fontFamily: "avenir" }}>
         {prev && <Link to={prev.frontmatter.path}>Prev</Link>}
-      </div>
-    </div>
+      </PostContainer>
+    </>
   )
 }
 

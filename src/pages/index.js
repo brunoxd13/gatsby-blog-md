@@ -1,22 +1,23 @@
 import React from "react"
 import Header from "../components/Header"
 import { graphql, Link } from "gatsby"
+import styled from "styled-components"
+
+const PostList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: avenir;
+`
 
 const Layout = ({ data }) => {
   const { edges } = data.allMarkdownRemark
 
   return (
-    <div>
+    <>
       <Header />
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          fontFamily: "avenir",
-        }}
-      >
+      <PostList>
         {edges.map(edge => {
           const { frontmatter } = edge.node
           return (
@@ -25,11 +26,11 @@ const Layout = ({ data }) => {
             </div>
           )
         })}
-        <div>
+        <>
           <Link to={"/tags"}>Browse by tags</Link>
-        </div>
-      </div>
-    </div>
+        </>
+      </PostList>
+    </>
   )
 }
 
