@@ -11,6 +11,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-transformer-remark`,
+    `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
